@@ -11,10 +11,20 @@ def get_student():
 
     github = request.args.get('github', 'jhacks')
     first, last, github = hackbright.get_student_by_github(github)
+    grades = hackbright.get_grades_by_github(github)
+    
     return render_template('student_info.html', 
                            first=first,
                            last=last,
-                           github=github)
+                           github=github,
+                           grades=grades)
+
+
+@app.route("/student-add", methods=["GET"])
+def get_student_creation_form():
+    """Show form for creating a student."""
+    
+    return render_template("student_creation_form.html")
 
 
 @app.route("/student-search")
@@ -24,7 +34,7 @@ def get_student_form():
     return render_template("student_search.html")
 
 
-@app.route("/student-add", methods=["post"])
+@app.route("/student-add", methods=["POST"])
 def student_add():
     """Add a student."""
 
@@ -37,11 +47,19 @@ def student_add():
                             last_name=last_name, github=github)
 
 
-@app.route("/student-add", methods=["get"])
-def get_student_creation_form():
-    """Show form for creating a student."""
-    
-    return render_template("student_creation_form.html")
+@app.route("/project", methods=["GET"])
+def get_project():
+    """Display information for a project."""
+
+    project_title = request.args.get("project-title", "")
+    title, description, max_grade = hackbright.get_project_by_title(project_title)
+    grades = hackbright.get_grades_by_title(title)
+
+    return render_template("project_info.html",
+                           project_title=title,
+                           project_description=description,
+                           max_grade=max_grade,
+                           grades=grades)
 
 
 if __name__ == "__main__":
