@@ -117,6 +117,18 @@ def get_grades_by_title(title):
     return rows
 
 
+def get_all_student_info():
+    """Get list of student first name, last name, and github for all students."""
+
+    QUERY = """
+        SELECT first_name, last_name, github
+        FROM Students
+        """
+    db_cursor = db.session.execute(QUERY, {})
+
+    return db_cursor.fetchall()
+
+
 def handle_input():
     """Main loop.
 

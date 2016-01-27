@@ -5,6 +5,16 @@ import hackbright
 app = Flask(__name__)
 
 
+@app.route("/")
+def get_homepage():
+    """Displays homepage."""
+
+    students = hackbright.get_all_student_info()
+
+    return render_template("homepage.html",
+                           students=students)
+
+
 @app.route("/student")
 def get_student():
     """Show information about a student."""
